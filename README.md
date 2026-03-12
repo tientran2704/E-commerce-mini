@@ -34,7 +34,6 @@ A modern e-commerce website with AI chatbot and product recommendations, built w
 - Admin login
 - Add/Edit/Delete products
 - View all orders
-- Manage users
 
 ### AI Features
 - **AI Chatbot**: Ask product-related questions using OpenAI
@@ -56,13 +55,13 @@ ai-ecommerce/
 │   │   └── aiController.js
 │   ├── middleware/
 │   │   └── auth.js
-│   ├── models/
-│   │   └── index.js
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── productRoutes.js
 │   │   ├── orderRoutes.js
 │   │   └── aiRoutes.js
+│   ├── scripts/
+│   │   └── init-db.js
 │   ├── .env
 │   ├── package.json
 │   └── server.js
@@ -72,32 +71,30 @@ ai-ecommerce/
 │   │   └── index.html
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.js
-│   │   │   ├── ProductCard.js
-│   │   │   ├── CartItem.js
-│   │   │   ├── Chatbot.js
-│   │   │   ├── ProtectedRoute.js
-│   │   │   └── AdminRoute.js
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── CartItem.jsx
+│   │   │   ├── Chatbot.jsx
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   └── AdminRoute.jsx
 │   │   ├── pages/
-│   │   │   ├── Home.js
-│   │   │   ├── ProductDetail.js
-│   │   │   ├── Cart.js
-│   │   │   ├── Login.js
-│   │   │   ├── Register.js
-│   │   │   ├── Profile.js
-│   │   │   ├── Orders.js
-│   │   │   └── admin/
-│   │   │       ├── AdminDashboard.js
-│   │   │       ├── ManageProducts.js
-│   │   │       ├── ManageOrders.js
-│   │   │       └── ManageUsers.js
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── ProductDetailPage.jsx
+│   │   │   ├── CartPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── RegisterPage.jsx
+│   │   │   ├── ProfilePage.jsx
+│   │   │   ├── OrdersPage.jsx
+│   │   │   ├── OrderDetailPage.jsx
+│   │   │   └── AdminPage.jsx
 │   │   ├── services/
 │   │   │   ├── api.js
 │   │   │   └── authService.js
 │   │   ├── context/
-│   │   │   └── AuthContext.js
-│   │   ├── App.js
-│   │   ├── index.js
+│   │   │   ├── AuthContext.jsx
+│   │   │   └── CartContext.jsx
+│   │   ├── App.jsx
+│   │   ├── main.jsx
 │   │   └── index.css
 │   ├── package.json
 │   ├── tailwind.config.js
@@ -118,18 +115,17 @@ ai-ecommerce/
 
 ### Step 1: Database Setup
 
-1. Open MySQL Workbench or use command line
-2. Create a new database:
+```bash
+cd backend
+npm run init-db
+```
+
+Or manually in MySQL Workbench:
 ```sql
 CREATE DATABASE ai_ecommerce;
+USE ai_ecommerce;
+-- Then import database/schema.sql
 ```
-
-3. Import the schema:
-```bash
-mysql -u root -p ai_ecommerce < database/schema.sql
-```
-
-Or copy the SQL from `database/schema.sql` and execute in MySQL Workbench.
 
 ### Step 2: Backend Setup
 
@@ -219,70 +215,6 @@ After running the application, create an admin user via:
 ```sql
 UPDATE users SET is_admin = 1 WHERE email = 'your_email@example.com';
 ```
-
----
-
-## Environment Variables
-
-### Backend (.env)
-```env
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=ai_ecommerce
-JWT_SECRET=your_jwt_secret_key_here
-OPENAI_API_KEY=sk-your-openai-api-key
-```
-
----
-
-## Sample API Requests
-
-### Register User
-```bash
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
-```
-
-### Login
-```bash
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"john@example.com","password":"password123"}'
-```
-
-### Get Products
-```bash
-curl http://localhost:5000/api/products
-```
-
-### AI Chat
-```bash
-curl -X POST http://localhost:5000/api/ai/chat \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"message":"Suggest a laptop under $1000"}'
-```
-
----
-
-## AI Features Details
-
-### AI Chatbot
-The chatbot uses OpenAI's GPT model to answer product-related questions. It can:
-- Suggest products based on budget and requirements
-- Compare products
-- Answer product-related questions
-- Help with purchase decisions
-
-### AI Recommendations
-The recommendation system analyzes:
-- User's viewing history
-- Product categories
-- Price ranges
-- Similar products
 
 ---
 
