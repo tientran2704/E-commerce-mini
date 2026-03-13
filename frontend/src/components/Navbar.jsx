@@ -104,7 +104,14 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      My Orders
+                      Đơn hàng của tôi
+                    </Link>
+                    <Link
+                      to="/submit-product"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Đăng sản phẩm
                     </Link>
                     {user.is_admin && (
                       <Link
@@ -112,7 +119,7 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        Admin Dashboard
+                        Trang quản trị
                       </Link>
                     )}
                     <button

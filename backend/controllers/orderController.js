@@ -70,10 +70,18 @@ const getUserOrders = (req, res) => {
       return res.status(500).json({ message: 'Database error', error: err.message });
     }
 
-    const orders = results.map(order => ({
-      ...order,
-      items: order.items ? JSON.parse(order.items).filter(item => item.id !== null) : []
-    }));
+    const orders = results.map(order => {
+      let items = [];
+      if (order.items) {
+        try {
+          items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+          items = Array.isArray(items) ? items.filter(item => item.id !== null) : [];
+        } catch (e) {
+          items = [];
+        }
+      }
+      return { ...order, items };
+    });
 
     res.json(orders);
   });
@@ -104,10 +112,18 @@ const getAllOrders = (req, res) => {
       return res.status(500).json({ message: 'Database error', error: err.message });
     }
 
-    const orders = results.map(order => ({
-      ...order,
-      items: order.items ? JSON.parse(order.items).filter(item => item.id !== null) : []
-    }));
+    const orders = results.map(order => {
+      let items = [];
+      if (order.items) {
+        try {
+          items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+          items = Array.isArray(items) ? items.filter(item => item.id !== null) : [];
+        } catch (e) {
+          items = [];
+        }
+      }
+      return { ...order, items };
+    });
 
     res.json(orders);
   });
@@ -168,10 +184,17 @@ const getOrderById = (req, res) => {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    const order = {
-      ...results[0],
-      items: results[0].items ? JSON.parse(results[0].items).filter(item => item.id !== null) : []
-    };
+    let items = [];
+    if (results[0].items) {
+      try {
+        items = typeof results[0].items === 'string' ? JSON.parse(results[0].items) : results[0].items;
+        items = Array.isArray(items) ? items.filter(item => item.id !== null) : [];
+      } catch (e) {
+        items = [];
+      }
+    }
+
+    const order = { ...results[0], items };
 
     res.json(order);
   });

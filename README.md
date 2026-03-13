@@ -227,3 +227,7 @@ MIT License
 ## Author
 
 Your Name - Full Stack Developer
+
+Password admin
+email = admin@example.com mật khẩu = Admin@123
+node scripts/create-admin.js admin@example.com Admin@123 "Admin User"

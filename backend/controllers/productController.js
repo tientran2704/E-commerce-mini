@@ -6,6 +6,8 @@ const getAllProducts = (req, res) => {
   let sql = 'SELECT * FROM products WHERE 1=1';
   const params = [];
 
+  sql += " AND (status = 'approved' OR status IS NULL)";
+
   if (category) {
     sql += ' AND category = ?';
     params.push(category);
@@ -60,13 +62,16 @@ const getProductById = (req, res) => {
 
 const createProduct = (req, res) => {
   const { name, price, description, image, category, stock } = req.body;
+  const isAdmin = req.user && req.user.is_admin;
+  const userId = req.user ? req.user.id : null;
 
   if (!name || !price || !category) {
     return res.status(400).json({ message: 'Name, price, and category are required' });
   }
 
-  const sql = 'INSERT INTO products (name, price, description, image, category, stock) VALUES (?, ?, ?, ?, ?, ?)';
-  db.query(sql, [name, price, description, image, category, stock || 0], (err, result) => {
+  const status = isAdmin ? 'approved' : 'pending';
+  const sql = 'INSERT INTO products (name, price, description, image, category, stock, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [name, price, description, image, category, stock || 0, status, isAdmin ? null : userId], (err, result) => {
     if (err) {
       return res.status(500).json({ message: 'Error creating product' });
     }
@@ -139,8 +144,31 @@ const searchProducts = (req, res) => {
   });
 };
 
+const getPendingProducts = (req, res) => {
+  const sql = "SELECT p.*, u.name as creator_name, u.email as creator_email FROM products p LEFT JOIN users u ON p.created_by = u.id WHERE p.status = 'pending' ORDER BY p.created_at DESC";
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database error' });
+    }
+    res.json(results);
+  });
+};
+
+const approveProduct = (req, res) => {
+  const { id } = req.params;
+  db.query("UPDATE products SET status = 'approved' WHERE id = ?", [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database error' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json({ message: 'Đã duyệt sản phẩm' });
+  });
+};
+
 const getCategories = (req, res) => {
-  const sql = 'SELECT DISTINCT category FROM products ORDER BY category';
+  const sql = "SELECT DISTINCT category FROM products WHERE (status = 'approved' OR status IS NULL) ORDER BY category";
   db.query(sql, (err, results) => {
     if (err) {
       console.error('getCategories error:', err.message);
@@ -161,5 +189,7 @@ module.exports = {
   updateProduct,
   deleteProduct,
   searchProducts,
-  getCategories
+  getCategories,
+  getPendingProducts,
+  approveProduct,
 };

@@ -80,6 +80,16 @@ export const productService = {
     const response = await api.delete(`/products/${id}`);
     return response.data;
   },
+
+  getPending: async () => {
+    const response = await api.get('/products/pending');
+    return response.data;
+  },
+
+  approve: async (id) => {
+    const response = await api.put(`/products/${id}/approve`);
+    return response.data;
+  },
 };
 
 export const orderService = {

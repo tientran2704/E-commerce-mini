@@ -4,6 +4,7 @@ import { productService, orderService } from '../services/api';
 function AdminPage() {
   const [activeTab, setActiveTab] = useState('products');
   const [products, setProducts] = useState([]);
+  const [pendingProducts, setPendingProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -23,12 +24,19 @@ function AdminPage() {
     fetchData();
   }, [activeTab]);
 
+  useEffect(() => {
+    productService.getPending().then(setPendingProducts).catch(() => {});
+  }, []);
+
   const fetchData = async () => {
     setLoading(true);
     try {
       if (activeTab === 'products') {
         const data = await productService.getAll();
         setProducts(data);
+      } else if (activeTab === 'pendingProducts') {
+        const data = await productService.getPending();
+        setPendingProducts(data);
       } else if (activeTab === 'orders') {
         const data = await orderService.getAll();
         setOrders(data);
@@ -91,9 +99,19 @@ function AdminPage() {
     try {
       await orderService.updateStatus(orderId, status);
       fetchData();
-      alert('Order status updated!');
+      alert('Đã cập nhật trạng thái đơn hàng!');
     } catch (error) {
-      alert(error.response?.data?.message || 'Error updating order');
+      alert(error.response?.data?.message || 'Có lỗi xảy ra');
+    }
+  };
+
+  const handleApproveProduct = async (id) => {
+    try {
+      await productService.approve(id);
+      fetchData();
+      alert('Đã duyệt sản phẩm!');
+    } catch (error) {
+      alert(error.response?.data?.message || 'Có lỗi xảy ra');
     }
   };
 
@@ -134,29 +152,44 @@ function AdminPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Trang quản trị</h1>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-8">
+      <div className="flex flex-wrap gap-2 mb-8">
         <button
           onClick={() => setActiveTab('products')}
-          className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+          className={`px-5 py-2.5 rounded-lg font-medium transition-colors ${
             activeTab === 'products'
               ? 'bg-primary-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Products
+          Quản lý sản phẩm
+        </button>
+        <button
+          onClick={() => setActiveTab('pendingProducts')}
+          className={`px-5 py-2.5 rounded-lg font-medium transition-colors ${
+            activeTab === 'pendingProducts'
+              ? 'bg-primary-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Duyệt sản phẩm
+          {pendingProducts.length > 0 && (
+            <span className="ml-1.5 px-2 py-0.5 bg-yellow-400 text-yellow-900 rounded-full text-xs font-bold">
+              {pendingProducts.length}
+            </span>
+          )}
         </button>
         <button
           onClick={() => setActiveTab('orders')}
-          className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+          className={`px-5 py-2.5 rounded-lg font-medium transition-colors ${
             activeTab === 'orders'
               ? 'bg-primary-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Orders
+          Duyệt đơn hàng
         </button>
       </div>
 
@@ -164,7 +197,7 @@ function AdminPage() {
       {activeTab === 'products' && (
         <div>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-gray-800">Manage Products</h2>
+            <h2 className="text-xl font-semibold text-gray-800">Quản lý sản phẩm</h2>
             <button
               onClick={() => {
                 resetForm();
@@ -173,7 +206,7 @@ function AdminPage() {
               }}
               className="btn-primary"
             >
-              + Add Product
+              + Thêm sản phẩm
             </button>
           </div>
 
@@ -186,11 +219,11 @@ function AdminPage() {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sản phẩm</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Danh mục</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Giá</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tồn kho</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -221,13 +254,13 @@ function AdminPage() {
                           onClick={() => openEditModal(product)}
                           className="text-primary-600 hover:text-primary-700 font-medium mr-4"
                         >
-                          Edit
+                          Sửa
                         </button>
                         <button
                           onClick={() => handleDeleteProduct(product.id)}
                           className="text-red-600 hover:text-red-700 font-medium"
                         >
-                          Delete
+                          Xóa
                         </button>
                       </td>
                     </tr>
@@ -239,10 +272,60 @@ function AdminPage() {
         </div>
       )}
 
-      {/* Orders Tab */}
+      {/* Pending Products Tab - Duyệt sản phẩm */}
+      {activeTab === 'pendingProducts' && (
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">Sản phẩm chờ duyệt ({pendingProducts.length})</h2>
+
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+            </div>
+          ) : pendingProducts.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-500">
+              Không có sản phẩm nào chờ duyệt.
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {pendingProducts.map((product) => (
+                <div key={product.id} className="bg-white rounded-xl shadow-sm p-6 flex flex-wrap items-center gap-6">
+                  <img
+                    src={product.image || 'https://via.placeholder.com/80'}
+                    alt={product.name}
+                    className="w-20 h-20 object-cover rounded-lg"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-800">{product.name}</h3>
+                    <p className="text-sm text-gray-500">{product.category} • ${product.price?.toLocaleString()}</p>
+                    {product.creator_name && (
+                      <p className="text-xs text-gray-400 mt-1">Người gửi: {product.creator_name} ({product.creator_email})</p>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleApproveProduct(product.id)}
+                      className="btn-primary"
+                    >
+                      Duyệt
+                    </button>
+                    <button
+                      onClick={() => handleDeleteProduct(product.id)}
+                      className="btn-secondary text-red-600 hover:bg-red-50"
+                    >
+                      Từ chối
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Orders Tab - Duyệt đơn hàng */}
       {activeTab === 'orders' && (
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">Manage Orders</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">Duyệt đơn hàng</h2>
 
           {loading ? (
             <div className="flex items-center justify-center py-16">
@@ -254,30 +337,38 @@ function AdminPage() {
                 <div key={order.id} className="bg-white rounded-xl shadow-sm p-6">
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                     <div>
-                      <p className="font-semibold text-gray-800">Order #{order.id}</p>
+                      <p className="font-semibold text-gray-800">Đơn #{order.id}</p>
                       <p className="text-sm text-gray-500">
                         {order.user_name || 'User'} - {order.user_email}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
-                        {order.status}
+                        {order.status === 'pending' ? 'Chờ duyệt' : order.status}
                       </span>
                       <span className="font-bold text-primary-600">${order.total_price?.toLocaleString()}</span>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 items-center">
+                    {order.status === 'pending' && (
+                      <button
+                        onClick={() => handleUpdateOrderStatus(order.id, 'processing')}
+                        className="btn-primary"
+                      >
+                        Duyệt đơn
+                      </button>
+                    )}
                     <select
                       value={order.status}
                       onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
                       className="input-field w-auto"
                     >
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option value="pending">Chờ duyệt</option>
+                      <option value="processing">Đang xử lý</option>
+                      <option value="shipped">Đã giao vận</option>
+                      <option value="delivered">Đã giao</option>
+                      <option value="cancelled">Đã hủy</option>
                     </select>
                   </div>
                 </div>

@@ -7,16 +7,20 @@ const {
   updateProduct, 
   deleteProduct,
   searchProducts,
-  getCategories
+  getCategories,
+  getPendingProducts,
+  approveProduct,
 } = require('../controllers/productController');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 router.get('/', getAllProducts);
 router.get('/search', searchProducts);
 router.get('/categories', getCategories);
+router.get('/pending', authenticateToken, requireAdmin, getPendingProducts);
 router.get('/:id', getProductById);
 
-router.post('/', authenticateToken, requireAdmin, createProduct);
+router.post('/', authenticateToken, createProduct);
+router.put('/:id/approve', authenticateToken, requireAdmin, approveProduct);
 router.put('/:id', authenticateToken, requireAdmin, updateProduct);
 router.delete('/:id', authenticateToken, requireAdmin, deleteProduct);
 
