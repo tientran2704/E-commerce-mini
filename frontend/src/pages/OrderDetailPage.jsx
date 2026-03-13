@@ -34,8 +34,46 @@ function OrderDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+          <div className="p-6 border-b flex items-center justify-between gap-4">
+            <div className="space-y-2">
+              <div className="h-5 w-32 bg-gray-200 rounded" />
+              <div className="h-4 w-40 bg-gray-200 rounded" />
+            </div>
+            <div className="h-8 w-28 bg-gray-200 rounded-full" />
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+              <div className="h-4 w-full bg-gray-200 rounded" />
+              <div className="h-4 w-5/6 bg-gray-200 rounded" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+              <div className="h-4 w-40 bg-gray-200 rounded" />
+            </div>
+          </div>
+          <div className="p-6 border-t space-y-4">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                <div className="w-20 h-20 bg-gray-200 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 w-32 bg-gray-200 rounded" />
+                  <div className="h-3 w-20 bg-gray-200 rounded" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-16 bg-gray-200 rounded" />
+                  <div className="h-3 w-20 bg-gray-200 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="p-6 border-t bg-gray-50 flex justify-between items-center">
+            <div className="h-5 w-16 bg-gray-200 rounded" />
+            <div className="h-6 w-24 bg-gray-200 rounded" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -52,7 +90,7 @@ function OrderDetailPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       <div className="mb-6">
         <Link to="/orders" className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

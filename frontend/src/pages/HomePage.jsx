@@ -37,14 +37,38 @@ function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
+        <div className="mb-8">
+          <div className="h-10 w-40 bg-gray-200 rounded-full animate-pulse mb-4" />
+          <div className="h-24 max-w-xl bg-gray-200 rounded-2xl animate-pulse" />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div
+              key={index}
+              className="card overflow-hidden animate-pulse"
+              style={{ '--card-index': index }}
+            >
+              <div className="h-48 bg-gray-200" />
+              <div className="p-4 space-y-3">
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div className="h-3 bg-gray-200 rounded w-full" />
+                <div className="flex items-center justify-between pt-2">
+                  <div className="h-5 bg-gray-200 rounded w-20" />
+                  <div className="h-3 bg-gray-200 rounded w-16" />
+                </div>
+                <div className="h-9 bg-gray-200 rounded-lg" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-primary-600 to-secondary-500 rounded-2xl p-8 mb-8 text-white">
         <h1 className="text-4xl font-bold mb-4">
@@ -100,9 +124,13 @@ function HomePage() {
           <p className="text-gray-500 text-lg">No products found</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <Link key={product.id} to={`/product/${product.id}`}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 card-grid-animate">
+          {products.map((product, index) => (
+            <Link
+              key={product.id}
+              to={`/product/${product.id}`}
+              style={{ '--card-index': index }}
+            >
               <ProductCard product={product} onAddToCart={handleAddToCart} />
             </Link>
           ))}

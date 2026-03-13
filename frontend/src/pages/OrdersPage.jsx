@@ -33,14 +33,31 @@ function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
+        <div className="space-y-4 animate-pulse">
+          <div className="h-8 w-48 bg-gray-200 rounded" />
+          {Array.from({ length: 2 }).map((_, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-sm p-6 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="h-4 w-24 bg-gray-200 rounded" />
+                <div className="h-4 w-24 bg-gray-200 rounded" />
+                <div className="h-4 w-20 bg-gray-200 rounded" />
+                <div className="h-6 w-24 bg-gray-200 rounded-full" />
+              </div>
+              <div className="flex gap-3">
+                {Array.from({ length: 3 }).map((__, i) => (
+                  <div key={i} className="w-16 h-16 bg-gray-200 rounded-lg" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">My Orders</h1>
 
       {orders.length === 0 ? (
@@ -55,9 +72,13 @@ function OrdersPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-6">
-          {orders.map((order) => (
-            <div key={order.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="space-y-6 card-grid-animate">
+          {orders.map((order, index) => (
+            <div
+              key={order.id}
+              className="bg-white rounded-xl shadow-sm overflow-hidden"
+              style={{ '--card-index': index }}
+            >
               <div className="p-6 border-b">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>

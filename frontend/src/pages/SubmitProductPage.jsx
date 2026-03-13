@@ -31,7 +31,7 @@ function SubmitProductPage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-8">
+    <div className="max-w-xl mx-auto px-4 py-8 page-transition">
       <div className="bg-white rounded-2xl shadow-lg p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Đăng sản phẩm</h1>
         <p className="text-gray-500 text-sm mb-6">Sản phẩm của bạn sẽ được admin xem xét và duyệt trước khi hiển thị.</p>

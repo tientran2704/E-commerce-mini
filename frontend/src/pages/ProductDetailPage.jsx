@@ -47,8 +47,31 @@ function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 animate-pulse">
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            <div className="w-full h-[500px] bg-gray-200" />
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm p-8 space-y-4">
+            <div className="h-6 w-32 bg-gray-200 rounded-full" />
+            <div className="h-8 w-2/3 bg-gray-200 rounded" />
+            <div className="h-4 w-full bg-gray-200 rounded" />
+            <div className="h-4 w-5/6 bg-gray-200 rounded" />
+            <div className="h-10 w-40 bg-gray-200 rounded mt-4" />
+            <div className="h-12 w-full bg-gray-200 rounded-lg mt-6" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="card overflow-hidden animate-pulse">
+              <div className="h-40 bg-gray-200" />
+              <div className="p-4 space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div className="h-4 bg-gray-200 rounded w-1/2" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -65,7 +88,7 @@ function ProductDetailPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       <div className="mb-6">
         <Link to="/" className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,9 +173,14 @@ function ProductDetailPage() {
             </svg>
             AI Recommendations
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {recommendations.map((rec) => (
-              <Link key={rec.id} to={`/product/${rec.id}`} className="card overflow-hidden group">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 card-grid-animate">
+            {recommendations.map((rec, index) => (
+              <Link
+                key={rec.id}
+                to={`/product/${rec.id}`}
+                className="card overflow-hidden group"
+                style={{ '--card-index': index }}
+              >
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={rec.image || 'https://via.placeholder.com/300'}

@@ -151,7 +151,7 @@ function AdminPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Trang quản trị</h1>
 
       {/* Tabs */}
@@ -286,9 +286,13 @@ function AdminPage() {
               Không có sản phẩm nào chờ duyệt.
             </div>
           ) : (
-            <div className="grid gap-4">
-              {pendingProducts.map((product) => (
-                <div key={product.id} className="bg-white rounded-xl shadow-sm p-6 flex flex-wrap items-center gap-6">
+            <div className="grid gap-4 card-grid-animate">
+              {pendingProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className="bg-white rounded-xl shadow-sm p-6 flex flex-wrap items-center gap-6"
+                  style={{ '--card-index': index }}
+                >
                   <img
                     src={product.image || 'https://via.placeholder.com/80'}
                     alt={product.name}
@@ -332,9 +336,13 @@ function AdminPage() {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
             </div>
           ) : (
-            <div className="space-y-4">
-              {orders.map((order) => (
-                <div key={order.id} className="bg-white rounded-xl shadow-sm p-6">
+            <div className="space-y-4 card-grid-animate">
+              {orders.map((order, index) => (
+                <div
+                  key={order.id}
+                  className="bg-white rounded-xl shadow-sm p-6"
+                  style={{ '--card-index': index }}
+                >
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                     <div>
                       <p className="font-semibold text-gray-800">Đơn #{order.id}</p>

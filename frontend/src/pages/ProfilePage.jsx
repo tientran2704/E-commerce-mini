@@ -36,7 +36,7 @@ function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center page-transition">
         <p className="text-gray-500">Please log in to view your profile.</p>
         <Link to="/login" className="btn-primary inline-block mt-4">
           Login
@@ -45,8 +45,42 @@ function ProfilePage() {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-lg p-8 animate-pulse space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="h-8 w-40 bg-gray-200 rounded" />
+              <div className="h-4 w-16 bg-gray-200 rounded" />
+            </div>
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+              <div className="w-16 h-16 bg-gray-200 rounded-full" />
+              <div className="space-y-2">
+                <div className="h-4 w-32 bg-gray-200 rounded" />
+                <div className="h-3 w-40 bg-gray-200 rounded" />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="h-3 w-24 bg-gray-200 rounded" />
+                <div className="h-10 w-full bg-gray-200 rounded-lg" />
+              </div>
+              <div className="space-y-2">
+                <div className="h-3 w-20 bg-gray-200 rounded" />
+                <div className="h-10 w-full bg-gray-200 rounded-lg" />
+              </div>
+            </div>
+            <div className="h-10 w-32 bg-gray-200 rounded-lg" />
+            <div className="h-12 w-full bg-gray-200 rounded-xl" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <div className="flex items-center justify-between mb-8">
