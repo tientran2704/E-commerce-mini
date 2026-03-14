@@ -92,3 +92,17 @@ INSERT INTO users (name, email, password, is_admin) VALUES
 -- Note: The password hash above is a placeholder. 
 -- To create a real admin user, register through the app and then run:
 -- UPDATE users SET is_admin = TRUE WHERE email = 'your_email@example.com';
+
+-- Reviews Table
+CREATE TABLE IF NOT EXISTS reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'approved',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { productService } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { aiService } from '../services/api';
+import ReviewList from '../components/ReviewList';
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -199,6 +200,11 @@ function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Reviews Section */}
+      <div className="mt-12">
+        <ReviewList productId={id} />
+      </div>
     </div>
   );
 }

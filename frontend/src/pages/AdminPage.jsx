@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
-import { productService, orderService } from '../services/api';
+import { productService, orderService, reviewService } from '../services/api';
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState('products');
   const [products, setProducts] = useState([]);
   const [pendingProducts, setPendingProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [reviewFilter, setReviewFilter] = useState('all');
 
   // Form state
   const [productForm, setProductForm] = useState({
@@ -28,6 +30,12 @@ function AdminPage() {
     productService.getPending().then(setPendingProducts).catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (activeTab === 'reviews') {
+      fetchData();
+    }
+  }, [reviewFilter]);
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -40,6 +48,11 @@ function AdminPage() {
       } else if (activeTab === 'orders') {
         const data = await orderService.getAll();
         setOrders(data);
+      } else if (activeTab === 'reviews') {
+        const data = reviewFilter === 'all' 
+          ? await reviewService.getAll() 
+          : await reviewService.getAll(reviewFilter);
+        setReviews(data);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -110,6 +123,27 @@ function AdminPage() {
       await productService.approve(id);
       fetchData();
       alert('Đã duyệt sản phẩm!');
+    } catch (error) {
+      alert(error.response?.data?.message || 'Có lỗi xảy ra');
+    }
+  };
+
+  const handleUpdateReviewStatus = async (reviewId, status) => {
+    try {
+      await reviewService.updateStatus(reviewId, status);
+      fetchData();
+      alert('Đã cập nhật trạng thái đánh giá!');
+    } catch (error) {
+      alert(error.response?.data?.message || 'Có lỗi xảy ra');
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    if (!confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) return;
+    try {
+      await reviewService.delete(reviewId);
+      fetchData();
+      alert('Đã xóa đánh giá!');
     } catch (error) {
       alert(error.response?.data?.message || 'Có lỗi xảy ra');
     }
@@ -190,6 +224,16 @@ function AdminPage() {
           }`}
         >
           Duyệt đơn hàng
+        </button>
+        <button
+          onClick={() => setActiveTab('reviews')}
+          className={`px-5 py-2.5 rounded-lg font-medium transition-colors ${
+            activeTab === 'reviews'
+              ? 'bg-primary-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Quản lý đánh giá
         </button>
       </div>
 
@@ -378,6 +422,117 @@ function AdminPage() {
                       <option value="delivered">Đã giao</option>
                       <option value="cancelled">Đã hủy</option>
                     </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Reviews Tab - Quản lý đánh giá */}
+      {activeTab === 'reviews' && (
+        <div>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">Quản lý đánh giá</h2>
+            <select
+              value={reviewFilter}
+              onChange={(e) => {
+                setReviewFilter(e.target.value);
+              }}
+              className="input-field w-auto"
+            >
+              <option value="all">Tất cả</option>
+              <option value="approved">Đã duyệt</option>
+              <option value="pending">Chờ duyệt</option>
+              <option value="rejected">Từ chối</option>
+            </select>
+          </div>
+
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-500">
+              Không có đánh giá nào.
+            </div>
+          ) : (
+            <div className="space-y-4 card-grid-animate">
+              {reviews.map((review, index) => (
+                <div
+                  key={review.id}
+                  className="bg-white rounded-xl shadow-sm p-6"
+                  style={{ '--card-index': index }}
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-gray-800">{review.user_name}</span>
+                        <span className="text-gray-400">đánh giá</span>
+                        <span className="font-semibold text-primary-600">{review.product_name}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <span className="text-yellow-400">
+                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                        </span>
+                        <span>•</span>
+                        <span>{new Date(review.created_at).toLocaleDateString('vi-VN')}</span>
+                      </div>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      review.status === 'approved' ? 'bg-green-100 text-green-800' :
+                      review.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {review.status === 'approved' ? 'Đã duyệt' :
+                       review.status === 'pending' ? 'Chờ duyệt' : 'Từ chối'}
+                    </span>
+                  </div>
+
+                  {review.comment && (
+                    <p className="text-gray-600 mb-4">{review.comment}</p>
+                  )}
+
+                  <div className="flex flex-wrap gap-2">
+                    {review.status === 'pending' && (
+                      <>
+                        <button
+                          onClick={() => handleUpdateReviewStatus(review.id, 'approved')}
+                          className="btn-primary"
+                        >
+                          Duyệt
+                        </button>
+                        <button
+                          onClick={() => handleUpdateReviewStatus(review.id, 'rejected')}
+                          className="btn-secondary text-red-600 hover:bg-red-50"
+                        >
+                          Từ chối
+                        </button>
+                      </>
+                    )}
+                    {review.status === 'approved' && (
+                      <button
+                        onClick={() => handleUpdateReviewStatus(review.id, 'rejected')}
+                        className="btn-secondary text-red-600 hover:bg-red-50"
+                      >
+                        Ẩn đánh giá
+                      </button>
+                    )}
+                    {review.status === 'rejected' && (
+                      <button
+                        onClick={() => handleUpdateReviewStatus(review.id, 'approved')}
+                        className="btn-primary"
+                      >
+                        Hiện đánh giá
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDeleteReview(review.id)}
+                      className="btn-secondary text-red-600 hover:bg-red-50"
+                    >
+                      Xóa
+                    </button>
                   </div>
                 </div>
               ))}

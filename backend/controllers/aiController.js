@@ -1,9 +1,13 @@
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const db = require('../config/db');
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const getGenAI = () => {
+  const apiKey = process.env.GOOGLE_API_KEY;
+  if (!apiKey || apiKey.length < 20) {
+    return null;
+  }
+  return new GoogleGenerativeAI(apiKey);
+};
 
 const chat = async (req, res) => {
   try {
@@ -11,6 +15,22 @@ const chat = async (req, res) => {
 
     if (!message) {
       return res.status(400).json({ message: 'Message is required' });
+    }
+
+    const genAI = getGenAI();
+    
+    if (!genAI) {
+      const productSql = 'SELECT id, name, price, description, category FROM products LIMIT 50';
+      db.query(productSql, (err, products) => {
+        if (err) {
+          return res.status(500).json({ message: 'Error fetching products' });
+        }
+        return res.status(503).json({ 
+          message: 'AI chat is currently unavailable. Please check the Google API key configuration.',
+          products: products || []
+        });
+      });
+      return;
     }
 
     const productSql = 'SELECT id, name, price, description, category FROM products LIMIT 50';
@@ -23,7 +43,7 @@ const chat = async (req, res) => {
         `${p.name} - $${p.price} - ${p.category} - ${p.description}`
       ).join('\n');
 
-      const systemMessage = `You are a helpful AI shopping assistant for an e-commerce store. 
+      const systemPrompt = `You are a helpful AI shopping assistant for an e-commerce store. 
 You have access to the following products:
 ${productContext}
 
@@ -31,23 +51,33 @@ When suggesting products, provide specific product names and prices.
 If a user asks for recommendations, be specific about which products match their needs.
 Keep responses concise and friendly.`;
 
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: systemMessage },
-          { role: 'user', content: message }
-        ],
-        max_tokens: 500,
-        temperature: 0.7
-      });
+      try {
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        
+        const chatSession = model.startChat({
+          history: [
+            { role: 'user', parts: [{ text: systemPrompt }] },
+            { role: 'model', parts: [{ text: 'Hello! I am your AI shopping assistant. I have knowledge of all the products in our store. How can I help you today?' }] }
+          ]
+        });
 
-      res.json({ 
-        message: completion.choices[0].message.content,
-        products: products
-      });
+        const result = await chatSession.sendMessage(message);
+        const response = result.response.text();
+
+        res.json({ 
+          message: response,
+          products: products
+        });
+      } catch (aiError) {
+        console.error('Google AI API Error:', aiError.message);
+        res.status(503).json({ 
+          message: 'AI service is temporarily unavailable. Please try again later.',
+          products: products
+        });
+      }
     });
   } catch (error) {
-    console.error('OpenAI API Error:', error);
+    console.error('Chat Error:', error);
     res.status(500).json({ message: 'Error processing AI request' });
   }
 };

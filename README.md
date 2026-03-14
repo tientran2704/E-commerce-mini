@@ -231,3 +231,56 @@ Your Name - Full Stack Developer
 Password admin
 email = admin@example.com mật khẩu = Admin@123
 node scripts/create-admin.js admin@example.com Admin@123 "Admin User"
+
+---
+
+## Suggested New Features
+
+### 1. Payment Integration
+- Online payment gateway integration (VNPay, MoMo, Stripe)
+- Cash on Delivery (COD)
+
+### 2. Product Reviews & Comments
+- Star ratings by users
+- Product comments and Q&A
+
+### 3. Wishlist & Compare
+- Save favorite products
+- Compare products side by side
+
+### 4. User Account Management
+- Update personal information
+- Password change
+- Manage shipping addresses
+
+### 5. Order Tracking
+- Detailed order status
+- Email/SMS notifications
+
+### 6. Advanced Cart Features
+- Shopping cart persistence
+- Coupon/voucher codes
+- Shipping fee calculation
+
+### 7. Enhanced Admin Dashboard
+- Revenue and order statistics
+- Category management
+- User management
+- Coupon management
+
+### 8. Social Features
+- Product sharing
+- Recently viewed products
+
+### 9. Site Map
+- Tree-view product categories
+
+### 10. Advanced Search
+- Auto-complete search
+- Filter by price, rating, brand
+
+### 11. Push Notifications
+- Promotions and news
+
+### 12. Internationalization (i18n)
+- Vietnamese and English support
