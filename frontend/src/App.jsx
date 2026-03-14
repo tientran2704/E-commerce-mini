@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
+import './i18n';
 import Navbar from './components/Navbar';
 import Chatbot from './components/Chatbot';
 import ProtectedRoute from './components/ProtectedRoute';

@@ -4,6 +4,7 @@ import { productService } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { aiService } from '../services/api';
 import ReviewList from '../components/ReviewList';
+import { useTranslation } from 'react-i18next';
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [recommendations, setRecommendations] = useState([]);
   const { addToCart } = useCart();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -80,9 +82,9 @@ function ProductDetailPage() {
   if (!product) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <p className="text-gray-500">Product not found.</p>
+        <p className="text-gray-500">{t('errors.not_found')}</p>
         <Link to="/" className="btn-primary inline-block mt-4">
-          Back to Home
+          {t('common.home')}
         </Link>
       </div>
     );
@@ -95,7 +97,7 @@ function ProductDetailPage() {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Products
+          {t('common.products')}
         </Link>
       </div>
 
@@ -128,12 +130,12 @@ function ProductDetailPage() {
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${
               product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
             }`}>
-              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+              {product.stock > 0 ? `${product.stock} ${t('cart.quantity').toLowerCase()}` : t('product.no_reviews').replace('reviews', 'stock')}
             </span>
           </div>
 
           <div className="flex items-center gap-4 mb-6">
-            <label className="text-gray-700 font-medium">Quantity:</label>
+            <label className="text-gray-700 font-medium">{t('cart.quantity')}:</label>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -160,7 +162,7 @@ function ProductDetailPage() {
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            {product.stock ? 'Add to Cart' : 'Out of Stock'}
+            {product.stock ? t('product.add_to_cart') : t('errors.not_found').replace('Page', 'Stock')}
           </button>
         </div>
       </div>
@@ -172,7 +174,7 @@ function ProductDetailPage() {
             <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            AI Recommendations
+            {t('product.recommended_for_you')}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 card-grid-animate">
             {recommendations.map((rec, index) => (

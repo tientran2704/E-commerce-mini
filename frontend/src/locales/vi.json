@@ -1,0 +1,110 @@
+{
+  "common": {
+    "home": "Trang chủ",
+    "products": "Sản phẩm",
+    "cart": "Giỏ hàng",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ",
+    "orders": "Đơn hàng",
+    "admin": "Quản trị",
+    "search": "Tìm kiếm",
+    "search_placeholder": "Tìm kiếm sản phẩm...",
+    "language": "Ngôn ngữ",
+    "welcome": "Chào mừng",
+    "loading": "Đang tải..."
+  },
+  "navbar": {
+    "submit_product": "Đăng sản phẩm",
+    "my_orders": "Đơn hàng của tôi",
+    "cart_count": "{{count}} sản phẩm trong giỏ"
+  },
+  "home": {
+    "title": "Thương mại điện tử AI",
+    "subtitle": "Khám phá sản phẩm với gợi ý thông minh",
+    "featured_products": "Sản phẩm nổi bật",
+    "all_products": "Tất cả sản phẩm",
+    "categories": "Danh mục",
+    "no_products": "Không tìm thấy sản phẩm"
+  },
+  "product": {
+    "add_to_cart": "Thêm vào giỏ",
+    "price": "Giá",
+    "description": "Mô tả",
+    "category": "Danh mục",
+    "reviews": "Đánh giá",
+    "write_review": "Viết đánh giá",
+    "submit_review": "Gửi đánh giá",
+    "rating": "Xếp hạng",
+    "no_reviews": "Chưa có đánh giá",
+    "similar_products": "Sản phẩm tương tự",
+    "recommended_for_you": "Gợi ý cho bạn"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng trống",
+    "total": "Tổng cộng",
+    "checkout": "Thanh toán",
+    "continue_shopping": "Tiếp tục mua sắm",
+    "remove": "Xóa",
+    "quantity": "Số lượng"
+  },
+  "auth": {
+    "login_title": "Đăng nhập",
+    "register_title": "Đăng ký",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "name": "Họ tên",
+    "no_account": "Chưa có tài khoản?",
+    "have_account": "Đã có tài khoản?",
+    "login_success": "Đăng nhập thành công",
+    "register_success": "Đăng ký thành công",
+    "login_error": "Email hoặc mật khẩu không đúng",
+    "register_error": "Đăng ký thất bại"
+  },
+  "order": {
+    "title": "Đơn hàng của tôi",
+    "order_id": "Mã đơn hàng",
+    "date": "Ngày",
+    "status": "Trạng thái",
+    "total": "Tổng cộng",
+    "details": "Chi tiết",
+    "items": "Sản phẩm",
+    "pending": "Chờ xử lý",
+    "processing": "Đang xử lý",
+    "shipped": "Đã giao hàng",
+    "delivered": "Đã nhận",
+    "cancelled": "Đã hủy",
+    "no_orders": "Không có đơn hàng"
+  },
+  "admin": {
+    "dashboard": "Bảng điều khiển",
+    "products": "Sản phẩm",
+    "orders": "Đơn hàng",
+    "users": "Người dùng",
+    "add_product": "Thêm sản phẩm",
+    "edit_product": "Sửa sản phẩm",
+    "delete_product": "Xóa sản phẩm",
+    "approve_product": "Duyệt",
+    "reject_product": "Từ chối",
+    "pending_products": "Sản phẩm chờ duyệt",
+    "all_products": "Tất cả sản phẩm",
+    "total_sales": "Tổng doanh thu",
+    "total_orders": "Tổng đơn hàng",
+    "total_users": "Tổng người dùng"
+  },
+  "chatbot": {
+    "title": "Trợ lý AI",
+    "placeholder": "Hỏi về sản phẩm...",
+    "send": "Gửi",
+    "welcome": "Xin chào! Tôi có thể giúp gì cho bạn?"
+  },
+  "errors": {
+    "not_found": "Không tìm thấy trang",
+    "server_error": "Lỗi máy chủ",
+    "unauthorized": "Chưa đăng nhập",
+    "try_again": "Vui lòng thử lại"
+  }
+}

@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setIsLangOpen(false);
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -35,7 +43,7 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
             <div className="relative w-full">
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder={t('common.search_placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
@@ -59,8 +67,37 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
-              <span className="font-medium">AI Assistant</span>
+              <span className="font-medium">{t('chatbot.title')}</span>
             </button>
+
+            <div className="relative">
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="flex items-center space-x-1 text-gray-600 hover:text-primary-600"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <span className="text-sm font-medium uppercase">{i18n.language}</span>
+              </button>
+
+              {isLangOpen && (
+                <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <button
+                    onClick={() => changeLanguage('vi')}
+                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 ${i18n.language === 'vi' ? 'text-primary-600 font-medium' : 'text-gray-700'}`}
+                  >
+                    Tiếng Việt
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 ${i18n.language === 'en' ? 'text-primary-600 font-medium' : 'text-gray-700'}`}
+                  >
+                    English
+                  </button>
+                </div>
+              )}
+            </div>
 
             <Link
               to="/cart"
@@ -97,21 +134,21 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Profile
+                      {t('common.profile')}
                     </Link>
                     <Link
                       to="/orders"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Đơn hàng của tôi
+                      {t('navbar.my_orders')}
                     </Link>
                     <Link
                       to="/submit-product"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Đăng sản phẩm
+                      {t('navbar.submit_product')}
                     </Link>
                     {user.is_admin && (
                       <Link
@@ -119,7 +156,7 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        Trang quản trị
+                        {t('common.admin')}
                       </Link>
                     )}
                     <button
@@ -129,7 +166,7 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                       }}
                       className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
                     >
-                      Logout
+                      {t('common.logout')}
                     </button>
                   </div>
                 )}
@@ -140,13 +177,13 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                   to="/login"
                   className="text-gray-600 hover:text-primary-600 font-medium"
                 >
-                  Login
+                  {t('common.login')}
                 </Link>
                 <Link
                   to="/register"
                   className="btn-primary"
                 >
-                  Sign Up
+                  {t('common.register')}
                 </Link>
               </div>
             )}
@@ -157,7 +194,7 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
           <form onSubmit={handleSearch} className="flex">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder={t('common.search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"

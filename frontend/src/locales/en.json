@@ -1,0 +1,110 @@
+{
+  "common": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "orders": "Orders",
+    "admin": "Admin",
+    "search": "Search",
+    "search_placeholder": "Search products...",
+    "language": "Language",
+    "welcome": "Welcome",
+    "loading": "Loading..."
+  },
+  "navbar": {
+    "submit_product": "Submit Product",
+    "my_orders": "My Orders",
+    "cart_count": "{{count}} items in cart"
+  },
+  "home": {
+    "title": "AI-Powered E-Commerce",
+    "subtitle": "Discover products with intelligent recommendations",
+    "featured_products": "Featured Products",
+    "all_products": "All Products",
+    "categories": "Categories",
+    "no_products": "No products found"
+  },
+  "product": {
+    "add_to_cart": "Add to Cart",
+    "price": "Price",
+    "description": "Description",
+    "category": "Category",
+    "reviews": "Reviews",
+    "write_review": "Write a Review",
+    "submit_review": "Submit Review",
+    "rating": "Rating",
+    "no_reviews": "No reviews yet",
+    "similar_products": "Similar Products",
+    "recommended_for_you": "Recommended for You"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "continue_shopping": "Continue Shopping",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "auth": {
+    "login_title": "Login",
+    "register_title": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "name": "Name",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "login_success": "Login successful",
+    "register_success": "Registration successful",
+    "login_error": "Invalid email or password",
+    "register_error": "Registration failed"
+  },
+  "order": {
+    "title": "My Orders",
+    "order_id": "Order ID",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "details": "Details",
+    "items": "Items",
+    "pending": "Pending",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "no_orders": "No orders found"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "orders": "Orders",
+    "users": "Users",
+    "add_product": "Add Product",
+    "edit_product": "Edit Product",
+    "delete_product": "Delete Product",
+    "approve_product": "Approve",
+    "reject_product": "Reject",
+    "pending_products": "Pending Products",
+    "all_products": "All Products",
+    "total_sales": "Total Sales",
+    "total_orders": "Total Orders",
+    "total_users": "Total Users"
+  },
+  "chatbot": {
+    "title": "AI Assistant",
+    "placeholder": "Ask me about products...",
+    "send": "Send",
+    "welcome": "Hello! How can I help you today?"
+  },
+  "errors": {
+    "not_found": "Page not found",
+    "server_error": "Server error",
+    "unauthorized": "Unauthorized",
+    "try_again": "Please try again"
+  }
+}

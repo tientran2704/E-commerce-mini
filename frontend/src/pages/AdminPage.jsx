@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { productService, orderService, reviewService } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState('products');
@@ -11,6 +12,7 @@ function AdminPage() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [reviewFilter, setReviewFilter] = useState('all');
+  const { t } = useTranslation();
 
   // Form state
   const [productForm, setProductForm] = useState({
@@ -198,7 +200,7 @@ function AdminPage() {
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Quản lý sản phẩm
+          {t('admin.products')}
         </button>
         <button
           onClick={() => setActiveTab('pendingProducts')}
@@ -208,7 +210,7 @@ function AdminPage() {
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Duyệt sản phẩm
+          {t('admin.pending_products')}
           {pendingProducts.length > 0 && (
             <span className="ml-1.5 px-2 py-0.5 bg-yellow-400 text-yellow-900 rounded-full text-xs font-bold">
               {pendingProducts.length}
@@ -223,7 +225,7 @@ function AdminPage() {
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Duyệt đơn hàng
+          {t('admin.orders')}
         </button>
         <button
           onClick={() => setActiveTab('reviews')}
@@ -233,7 +235,7 @@ function AdminPage() {
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Quản lý đánh giá
+          {t('product.reviews')}
         </button>
       </div>
 
@@ -241,7 +243,7 @@ function AdminPage() {
       {activeTab === 'products' && (
         <div>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-gray-800">Quản lý sản phẩm</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('admin.products')}</h2>
             <button
               onClick={() => {
                 resetForm();
@@ -250,7 +252,7 @@ function AdminPage() {
               }}
               className="btn-primary"
             >
-              + Thêm sản phẩm
+              + {t('admin.add_product')}
             </button>
           </div>
 
@@ -298,13 +300,13 @@ function AdminPage() {
                           onClick={() => openEditModal(product)}
                           className="text-primary-600 hover:text-primary-700 font-medium mr-4"
                         >
-                          Sửa
+                          {t('admin.edit_product')}
                         </button>
                         <button
                           onClick={() => handleDeleteProduct(product.id)}
                           className="text-red-600 hover:text-red-700 font-medium"
                         >
-                          Xóa
+                          {t('admin.delete_product')}
                         </button>
                       </td>
                     </tr>
@@ -319,7 +321,7 @@ function AdminPage() {
       {/* Pending Products Tab - Duyệt sản phẩm */}
       {activeTab === 'pendingProducts' && (
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">Sản phẩm chờ duyệt ({pendingProducts.length})</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">{t('admin.pending_products')} ({pendingProducts.length})</h2>
 
           {loading ? (
             <div className="flex items-center justify-center py-16">
@@ -354,13 +356,13 @@ function AdminPage() {
                       onClick={() => handleApproveProduct(product.id)}
                       className="btn-primary"
                     >
-                      Duyệt
+                      {t('admin.approve_product')}
                     </button>
                     <button
                       onClick={() => handleDeleteProduct(product.id)}
                       className="btn-secondary text-red-600 hover:bg-red-50"
                     >
-                      Từ chối
+                      {t('admin.reject_product')}
                     </button>
                   </div>
                 </div>
@@ -370,10 +372,10 @@ function AdminPage() {
         </div>
       )}
 
-      {/* Orders Tab - Duyệt đơn hàng */}
+      {/* Orders Tab */}
       {activeTab === 'orders' && (
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">Duyệt đơn hàng</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">{t('admin.orders')}</h2>
 
           {loading ? (
             <div className="flex items-center justify-center py-16">
@@ -408,7 +410,7 @@ function AdminPage() {
                         onClick={() => handleUpdateOrderStatus(order.id, 'processing')}
                         className="btn-primary"
                       >
-                        Duyệt đơn
+                        {t('admin.approve_product')} đơn
                       </button>
                     )}
                     <select
@@ -501,13 +503,13 @@ function AdminPage() {
                           onClick={() => handleUpdateReviewStatus(review.id, 'approved')}
                           className="btn-primary"
                         >
-                          Duyệt
+                          {t('admin.approve_product')}
                         </button>
                         <button
                           onClick={() => handleUpdateReviewStatus(review.id, 'rejected')}
                           className="btn-secondary text-red-600 hover:bg-red-50"
                         >
-                          Từ chối
+                          {t('admin.reject_product')}
                         </button>
                       </>
                     )}

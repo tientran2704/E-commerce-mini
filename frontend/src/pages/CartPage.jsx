@@ -4,11 +4,13 @@ import CartItem from '../components/CartItem';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { orderService } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 function CartPage() {
   const { cart, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [shippingAddress, setShippingAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cash');
@@ -55,10 +57,10 @@ function CartPage() {
           <svg className="w-24 h-24 mx-auto text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Your cart is empty</h2>
-          <p className="text-gray-500 mb-6">Looks like you haven't added any products yet.</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('cart.empty')}</h2>
+          <p className="text-gray-500 mb-6">{t('cart.continue_shopping')}</p>
           <Link to="/" className="btn-primary inline-block">
-            Continue Shopping
+            {t('cart.continue_shopping')}
           </Link>
         </div>
       </div>
@@ -67,7 +69,7 @@ function CartPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">{t('cart.title')}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -85,11 +87,11 @@ function CartPage() {
         {/* Order Summary */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-sm p-6 sticky top-24">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Order Summary</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-6">{t('order.details')}</h2>
 
             <div className="space-y-4 mb-6">
               <div className="flex justify-between text-gray-600">
-                <span>Subtotal ({cart.length} items)</span>
+                <span>{t('cart.total')} ({cart.length} {t('order.items').toLowerCase()})</span>
                 <span>${cartTotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-gray-600">
@@ -97,7 +99,7 @@ function CartPage() {
                 <span className="text-green-600">Free</span>
               </div>
               <div className="border-t pt-4 flex justify-between text-xl font-bold">
-                <span>Total</span>
+                <span>{t('cart.total')}</span>
                 <span className="text-primary-600">${cartTotal.toLocaleString()}</span>
               </div>
             </div>
@@ -126,7 +128,7 @@ function CartPage() {
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="input-field"
                 >
-                  <option value="cash">Cash on Delivery</option>
+                  <option value="cash">{t('order.pending') === 'Pending' ? 'Cash on Delivery' : 'Thanh toán khi nhận hàng'}</option>
                   <option value="card">Credit/Debit Card</option>
                   <option value="bank">Bank Transfer</option>
                 </select>
@@ -137,7 +139,7 @@ function CartPage() {
                 disabled={loading}
                 className="w-full btn-primary py-3 text-lg disabled:opacity-50"
               >
-                {loading ? 'Processing...' : 'Place Order'}
+                {loading ? 'Processing...' : t('cart.checkout')}
               </button>
 
               <button

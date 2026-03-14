@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { orderService } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -58,17 +60,17 @@ function OrdersPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">My Orders</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">{t('order.title')}</h1>
 
       {orders.length === 0 ? (
         <div className="text-center py-16">
           <svg className="w-24 h-24 mx-auto text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">No orders yet</h2>
-          <p className="text-gray-500 mb-6">Start shopping to see your orders here!</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('order.no_orders')}</h2>
+          <p className="text-gray-500 mb-6">{t('home.no_products')}</p>
           <Link to="/" className="btn-primary inline-block">
-            Shop Now
+            {t('home.featured_products')}
           </Link>
         </div>
       ) : (
@@ -82,37 +84,42 @@ function OrdersPage() {
               <div className="p-6 border-b">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm text-gray-500">Order ID</p>
+                    <p className="text-sm text-gray-500">{t('order.order_id')}</p>
                     <p className="font-semibold text-gray-800">#{order.id}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Date</p>
+                    <p className="text-sm text-gray-500">{t('order.date')}</p>
                     <p className="font-medium text-gray-800">
                       {new Date(order.created_at).toLocaleDateString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Total</p>
+                    <p className="text-sm text-gray-500">{t('order.total')}</p>
                     <p className="font-bold text-primary-600">${order.total_price?.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Status</p>
+                    <p className="text-sm text-gray-500">{t('order.status')}</p>
                     <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
-                      {order.status?.charAt(0).toUpperCase() + order.status?.slice(1)}
+                      {order.status === 'pending' ? t('order.pending') :
+                       order.status === 'processing' ? t('order.processing') :
+                       order.status === 'shipped' ? t('order.shipped') :
+                       order.status === 'delivered' ? t('order.delivered') :
+                       order.status === 'cancelled' ? t('order.cancelled') :
+                       order.status?.charAt(0).toUpperCase() + order.status?.slice(1)}
                     </span>
                   </div>
                   <Link
                     to={`/orders/${order.id}`}
                     className="btn-secondary"
                   >
-                    View Details
+                    {t('order.details')}
                   </Link>
                 </div>
               </div>
 
               {/* Order Items Preview */}
               <div className="p-6 bg-gray-50">
-                <p className="text-sm text-gray-500 mb-3">{order.items?.length || 0} items</p>
+                <p className="text-sm text-gray-500 mb-3">{order.items?.length || 0} {t('order.items').toLowerCase()}</p>
                 <div className="flex flex-wrap gap-3">
                   {order.items?.slice(0, 4).map((item, index) => (
                     <div key={index} className="w-16 h-16 bg-white rounded-lg overflow-hidden shadow-sm">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 function RegisterPage() {
   const [name, setName] = useState('');
@@ -11,6 +12,7 @@ function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,8 +55,8 @@ function RegisterPage() {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-            <p className="text-gray-500 mt-2">Join us and start shopping</p>
+            <h1 className="text-3xl font-bold text-gray-800">{t('auth.register_title')}</h1>
+            <p className="text-gray-500 mt-2">{t('auth.no_account')}</p>
           </div>
 
           {error && (
@@ -66,7 +68,7 @@ function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
+                {t('auth.name')}
               </label>
               <input
                 type="text"
@@ -80,7 +82,7 @@ function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
+                {t('auth.email')}
               </label>
               <input
                 type="email"
@@ -94,7 +96,7 @@ function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                {t('auth.password')}
               </label>
               <input
                 type="password"
@@ -108,7 +110,7 @@ function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confirm Password
+                {t('auth.confirm_password')}
               </label>
               <input
                 type="password"
@@ -125,15 +127,15 @@ function RegisterPage() {
               disabled={loading}
               className="w-full btn-primary py-3 disabled:opacity-50"
             >
-              {loading ? 'Creating account...' : 'Create Account'}
+              {loading ? 'Creating account...' : t('common.register')}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              Already have an account?{' '}
+              {t('auth.have_account')}{' '}
               <Link to="/login" className="text-primary-600 hover:text-primary-700 font-medium">
-                Sign in
+                {t('common.login')}
               </Link>
             </p>
           </div>

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { productService } from '../services/api';
 import { useCart } from '../context/CartContext';
+import { useTranslation } from 'react-i18next';
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -10,6 +11,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const { addToCart } = useCart();
+  const { t } = useTranslation();
   const searchQuery = searchParams.get('search') || '';
 
   useEffect(() => {
@@ -72,17 +74,17 @@ function HomePage() {
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-primary-600 to-secondary-500 rounded-2xl p-8 mb-8 text-white">
         <h1 className="text-4xl font-bold mb-4">
-          Welcome to AIShop
+          {t('home.title')}
         </h1>
         <p className="text-xl mb-6">
-          Your personal AI-powered shopping assistant. Discover amazing products with smart recommendations!
+          {t('home.subtitle')}
         </p>
         <div className="flex gap-4">
           <Link
             to="/"
             className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
-            Shop Now
+            {t('home.featured_products')}
           </Link>
         </div>
       </div>
@@ -91,16 +93,16 @@ function HomePage() {
       {searchQuery && (
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
-            Search Results for "{searchQuery}"
+            {t('common.search')}: "{searchQuery}"
           </h2>
-          <p className="text-gray-500">{products.length} products found</p>
+          <p className="text-gray-500">{products.length} {t('home.all_products').toLowerCase()}</p>
         </div>
       )}
 
       {/* Categories */}
       {!searchQuery && categories.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Categories</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('home.categories')}</h2>
           <div className="flex flex-wrap gap-3">
             {categories.map((cat) => (
               <Link
@@ -121,7 +123,7 @@ function HomePage() {
           <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-gray-500 text-lg">No products found</p>
+          <p className="text-gray-500 text-lg">{t('home.no_products')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 card-grid-animate">
