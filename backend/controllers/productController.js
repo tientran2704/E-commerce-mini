@@ -61,7 +61,7 @@ const getProductById = (req, res) => {
 };
 
 const createProduct = (req, res) => {
-  const { name, price, description, image, category, stock } = req.body;
+  const { name, price, description, image, video_url, category, stock } = req.body;
   const isAdmin = req.user && req.user.is_admin;
   const userId = req.user ? req.user.id : null;
 
@@ -70,8 +70,8 @@ const createProduct = (req, res) => {
   }
 
   const status = isAdmin ? 'approved' : 'pending';
-  const sql = 'INSERT INTO products (name, price, description, image, category, stock, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-  db.query(sql, [name, price, description, image, category, stock || 0, status, isAdmin ? null : userId], (err, result) => {
+  const sql = 'INSERT INTO products (name, price, description, image, video_url, category, stock, status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [name, price, description, image, video_url, category, stock || 0, status, isAdmin ? null : userId], (err, result) => {
     if (err) {
       return res.status(500).json({ message: 'Error creating product' });
     }
@@ -88,10 +88,10 @@ const createProduct = (req, res) => {
 
 const updateProduct = (req, res) => {
   const { id } = req.params;
-  const { name, price, description, image, category, stock } = req.body;
+  const { name, price, description, image, video_url, category, stock } = req.body;
 
-  const sql = 'UPDATE products SET name = ?, price = ?, description = ?, image = ?, category = ?, stock = ? WHERE id = ?';
-  db.query(sql, [name, price, description, image, category, stock, id], (err, result) => {
+  const sql = 'UPDATE products SET name = ?, price = ?, description = ?, image = ?, video_url = ?, category = ?, stock = ? WHERE id = ?';
+  db.query(sql, [name, price, description, image, video_url, category, stock, id], (err, result) => {
     if (err) {
       return res.status(500).json({ message: 'Error updating product' });
     }

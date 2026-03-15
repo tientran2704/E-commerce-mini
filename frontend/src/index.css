@@ -43,6 +43,23 @@
     animation-delay: calc(var(--card-index, 0) * 40ms);
   }
 
+  .animate-scale-in {
+    animation: scale-in 200ms ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 200ms ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   @keyframes page-fade-up {
     from {
       opacity: 0;
@@ -62,6 +79,17 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 }

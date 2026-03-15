@@ -234,53 +234,22 @@ node scripts/create-admin.js admin@example.com Admin@123 "Admin User"
 
 ---
 
-## Suggested New Features
+Tính năng nâng cao:
 
-### 1. Payment Integration
-- Online payment gateway integration (VNPay, MoMo, Stripe)
-- Cash on Delivery (COD)
+Chat với khách hàng - Tích hợp chatbot hoặc live chat
+Đánh giá sản phẩm bằng AI - AI tổng hợp đánh giá thành điểm nổi bật
+Gợi ý sản phẩm cá nhân hóa - Dựa trên lịch sử mua hàng
+Chương trình thành viên/Tích điểm - Hệ thống loyalty points
+Flash Sale/Hotsale - Giới hạn thời gian giảm giá
+Tính năng tăng trải nghiệm:
 
-### 2. Product Reviews & Comments
-- Star ratings by users
-- Product comments and Q&A
+So sánh sản phẩm nâng cao - Bảng so sánh chi tiết
+Xem nhanh sản phẩm (Quick View) - Popup xem nhanh không cần vào trang
+Image Zoom - Phóng to hình ảnh sản phẩm
+Video sản phẩm - Hiển thị video thay vì chỉ hình ảnh
+Tính năng pre-order - Đặt hàng trước sản phẩm chưa ra mắt
+Tính năng admin:
 
-### 3. Wishlist & Compare
-- Save favorite products
-- Compare products side by side
-
-### 4. User Account Management
-- Update personal information
-- Password change
-- Manage shipping addresses
-
-### 5. Order Tracking
-- Detailed order status
-- Email/SMS notifications
-
-### 6. Advanced Cart Features
-- Shopping cart persistence
-- Coupon/voucher codes
-- Shipping fee calculation
-
-### 7. Enhanced Admin Dashboard
-- Revenue and order statistics
-- Category management
-- User management
-- Coupon management
-
-### 8. Social Features
-- Product sharing
-- Recently viewed products
-
-### 9. Site Map
-- Tree-view product categories
-
-### 10. Advanced Search
-- Auto-complete search
-- Filter by price, rating, brand
-
-### 11. Push Notifications
-- Promotions and news
-
-### 12. Internationalization (i18n)
-- Vietnamese and English support
+Quản lý kho hàng tự động - Cảnh báo tồn kho thấp
+Báo cáo doanh thu chi tiết - Biểu đồ, xuất file Excel
+Quản lý banner/-slider - Admin tự cấu hình banner

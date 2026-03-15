@@ -9,6 +9,7 @@ function SubmitProductPage() {
     price: '',
     description: '',
     image: '',
+    video_url: '',
     category: '',
     stock: '',
   });
@@ -81,6 +82,16 @@ function SubmitProductPage() {
               onChange={(e) => setForm({ ...form, image: e.target.value })}
               className="input-field"
               placeholder="https://..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">URL Video (YouTube/Vimeo)</label>
+            <input
+              type="url"
+              value={form.video_url}
+              onChange={(e) => setForm({ ...form, video_url: e.target.value })}
+              className="input-field"
+              placeholder="https://youtube.com/watch?v=... hoặc https://vimeo.com/..."
             />
           </div>
           <div>

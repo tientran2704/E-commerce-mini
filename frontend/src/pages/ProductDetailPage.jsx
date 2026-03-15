@@ -5,6 +5,8 @@ import { useCart } from '../context/CartContext';
 import { aiService } from '../services/api';
 import ReviewList from '../components/ReviewList';
 import { useTranslation } from 'react-i18next';
+import ImageZoom from '../components/ImageZoom';
+import ProductVideo from '../components/ProductVideo';
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -102,13 +104,21 @@ function ProductDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        {/* Product Image */}
+        {/* Product Image with Zoom */}
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <img
-            src={product.image || 'https://via.placeholder.com/600'}
-            alt={product.name}
-            className="w-full h-[500px] object-cover"
-          />
+          {product.video_url ? (
+            <ProductVideo 
+              videoUrl={product.video_url} 
+              poster={product.image}
+              alt={product.name}
+            />
+          ) : (
+            <ImageZoom
+              src={product.image || 'https://via.placeholder.com/600'}
+              alt={product.name}
+              zoomLevel={2}
+            />
+          )}
         </div>
 
         {/* Product Info */}

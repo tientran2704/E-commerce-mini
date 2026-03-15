@@ -128,13 +128,12 @@ function HomePage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 card-grid-animate">
           {products.map((product, index) => (
-            <Link
-              key={product.id}
-              to={`/product/${product.id}`}
-              style={{ '--card-index': index }}
-            >
-              <ProductCard product={product} onAddToCart={handleAddToCart} />
-            </Link>
+            <div key={product.id} style={{ '--card-index': index }}>
+              <ProductCard
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            </div>
           ))}
         </div>
       )}

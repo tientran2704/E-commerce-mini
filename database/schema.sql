@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS products (
     price DECIMAL(10, 2) NOT NULL,
     description TEXT,
     image VARCHAR(500),
+    video_url VARCHAR(500),
     category VARCHAR(100),
     stock INT DEFAULT 0,
     status ENUM('pending', 'approved') DEFAULT 'approved',
