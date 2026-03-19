@@ -1,5 +1,5 @@
 require('dotenv').config();
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
@@ -12,17 +12,17 @@ const pool = mysql.createPool({
   charset: 'utf8mb4',
 });
 
-// Use promise wrapper for consistent API (pool.query still works like connection.query)
+// Use promise wrapper for consistent API
 const db = pool;
 
-pool.getConnection((err, connection) => {
-  if (err) {
+pool.getConnection()
+  .then(connection => {
+    console.log('Connected to MySQL database');
+    connection.release();
+  })
+  .catch(err => {
     console.error('Database connection failed:', err.message);
     console.error('Make sure MySQL is running and run: npm run init-db');
-    return;
-  }
-  console.log('Connected to MySQL database');
-  connection.release();
-});
+  });
 
 module.exports = db;

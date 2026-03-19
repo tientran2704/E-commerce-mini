@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productService } from '../services/api';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 import { aiService } from '../services/api';
 import ReviewList from '../components/ReviewList';
 import { useTranslation } from 'react-i18next';
 import ImageZoom from '../components/ImageZoom';
 import ProductVideo from '../components/ProductVideo';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -15,7 +18,10 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [recommendations, setRecommendations] = useState([]);
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
   const { t } = useTranslation();
+  const isWishlisted = product ? isInWishlist(product.id) : false;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -48,6 +54,14 @@ function ProductDetailPage() {
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
+  };
+
+  const handleWishlistClick = async () => {
+    if (!user) {
+      alert('Vui lòng đăng nhập để thêm vào danh sách yêu thích');
+      return;
+    }
+    await toggleWishlist(product.id);
   };
 
   if (loading) {
@@ -167,12 +181,23 @@ function ProductDetailPage() {
           <button
             onClick={handleAddToCart}
             disabled={!product.stock}
-            className="w-full btn-primary py-4 text-lg disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 btn-primary py-4 text-lg disabled:opacity-50 flex items-center justify-center gap-2"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             {product.stock ? t('product.add_to_cart') : t('errors.not_found').replace('Page', 'Stock')}
+          </button>
+          <button
+            onClick={handleWishlistClick}
+            className={`ml-3 p-4 rounded-lg border-2 transition ${
+              isWishlisted 
+                ? 'border-red-500 bg-red-50 text-red-500' 
+                : 'border-gray-300 text-gray-600 hover:border-red-500 hover:text-red-500'
+            }`}
+            title={isWishlisted ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
+          >
+            {isWishlisted ? <FaHeart className="w-6 h-6" /> : <FaRegHeart className="w-6 h-6" />}
           </button>
         </div>
       </div>

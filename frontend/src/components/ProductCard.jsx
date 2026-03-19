@@ -1,6 +1,23 @@
 import { Link } from 'react-router-dom';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 
 const ProductCard = ({ product, onAddToCart }) => {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  const isWishlisted = isInWishlist(product.id);
+
+  const handleWishlistClick = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      alert('Vui lòng đăng nhập để thêm vào danh sách yêu thích');
+      return;
+    }
+    await toggleWishlist(product.id);
+  };
+
   return (
     <div className="card overflow-hidden">
       <Link to={`/product/${product.id}`} className="block">
@@ -13,6 +30,17 @@ const ProductCard = ({ product, onAddToCart }) => {
           <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-600">
             {product.category}
           </div>
+          <button
+            onClick={handleWishlistClick}
+            className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md hover:scale-110 transition-transform"
+            title={isWishlisted ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
+          >
+            {isWishlisted ? (
+              <FaHeart className="text-red-500" />
+            ) : (
+              <FaRegHeart className="text-gray-600" />
+            )}
+          </button>
         </div>
       </Link>
       

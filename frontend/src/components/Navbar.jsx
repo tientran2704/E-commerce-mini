@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useTranslation } from 'react-i18next';
+import { FaHeart } from 'react-icons/fa';
 
 const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
   const { user, logout } = useAuth();
+  const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -113,6 +116,19 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
               )}
             </Link>
 
+            <Link
+              to="/wishlist"
+              className="relative text-gray-600 hover:text-red-500 transition-colors"
+              title={t('wishlist.title', 'Danh sách yêu thích')}
+            >
+              <FaHeart className="w-6 h-6" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
             {user ? (
               <div className="relative">
                 <button
@@ -142,6 +158,13 @@ const Navbar = ({ cartCount = 0, onOpenChatbot }) => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {t('navbar.my_orders')}
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {t('wishlist.title', 'Danh sách yêu thích')}
                     </Link>
                     <Link
                       to="/submit-product"

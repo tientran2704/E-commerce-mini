@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 import './i18n';
 import Navbar from './components/Navbar';
 import Chatbot from './components/Chatbot';
@@ -10,6 +11,7 @@ import AdminRoute from './components/AdminRoute';
 
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
+import WishlistPage from './pages/WishlistPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
@@ -31,6 +33,7 @@ function LayoutWithCart() {
           <Route path="/" element={<HomePage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
@@ -51,7 +54,9 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <LayoutWithCart />
+          <WishlistProvider>
+            <LayoutWithCart />
+          </WishlistProvider>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>
