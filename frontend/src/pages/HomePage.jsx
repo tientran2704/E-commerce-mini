@@ -1,28 +1,45 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import HeroCarousel from '../components/HeroCarousel';
+import Pagination from '../components/Pagination';
 import { productService } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useTranslation } from 'react-i18next';
 
+const PER_PAGE = 12;
+
 function HomePage() {
   const [products, setProducts] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { addToCart } = useCart();
   const { t } = useTranslation();
   const searchQuery = searchParams.get('search') || '';
+  const page = Math.max(1, parseInt(searchParams.get('page'), 10) || 1);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [productsData, categoriesData] = await Promise.all([
-          searchQuery ? productService.search(searchQuery) : productService.getAll(),
+        const params = {
+          limit: PER_PAGE,
+          offset: (page - 1) * PER_PAGE,
+        };
+        if (searchQuery) params.search = searchQuery;
+
+        const [productsResponse, categoriesData] = await Promise.all([
+          productService.getAll(params),
           productService.getCategories(),
         ]);
-        setProducts(productsData);
+
+        const list = productsResponse?.products ?? productsResponse;
+        const total = productsResponse?.total ?? (Array.isArray(productsResponse) ? productsResponse.length : 0);
+
+        setProducts(Array.isArray(list) ? list : []);
+        setTotalProducts(total);
         setCategories(categoriesData);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -31,7 +48,18 @@ function HomePage() {
       }
     };
     fetchData();
-  }, [searchQuery]);
+  }, [searchQuery, page]);
+
+  const totalPages = Math.ceil(totalProducts / PER_PAGE) || 1;
+
+  const handlePageChange = (newPage) => {
+    const next = Math.min(totalPages, Math.max(1, newPage));
+    const nextParams = new URLSearchParams(searchParams);
+    if (next === 1) nextParams.delete('page');
+    else nextParams.set('page', String(next));
+    setSearchParams(nextParams);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleAddToCart = (product) => {
     addToCart(product);
@@ -40,10 +68,7 @@ function HomePage() {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
-        <div className="mb-8">
-          <div className="h-10 w-40 bg-gray-200 rounded-full animate-pulse mb-4" />
-          <div className="h-24 max-w-xl bg-gray-200 rounded-2xl animate-pulse" />
-        </div>
+        <HeroCarousel products={[]} />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, index) => (
@@ -71,23 +96,7 @@ function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary-600 to-secondary-500 rounded-2xl p-8 mb-8 text-white">
-        <h1 className="text-4xl font-bold mb-4">
-          {t('home.title')}
-        </h1>
-        <p className="text-xl mb-6">
-          {t('home.subtitle')}
-        </p>
-        <div className="flex gap-4">
-          <Link
-            to="/"
-            className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            {t('home.featured_products')}
-          </Link>
-        </div>
-      </div>
+      <HeroCarousel products={products} />
 
       {/* Search Results */}
       {searchQuery && (
@@ -95,7 +104,7 @@ function HomePage() {
           <h2 className="text-2xl font-bold text-gray-800">
             {t('common.search')}: "{searchQuery}"
           </h2>
-          <p className="text-gray-500">{products.length} {t('home.all_products').toLowerCase()}</p>
+          <p className="text-gray-500">{totalProducts} {t('home.all_products').toLowerCase()}</p>
         </div>
       )}
 
@@ -126,16 +135,27 @@ function HomePage() {
           <p className="text-gray-500 text-lg">{t('home.no_products')}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 card-grid-animate">
-          {products.map((product, index) => (
-            <div key={product.id} style={{ '--card-index': index }}>
-              <ProductCard
-                product={product}
-                onAddToCart={handleAddToCart}
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 card-grid-animate">
+            {products.map((product, index) => (
+              <div key={product.id} style={{ '--card-index': index }}>
+                <ProductCard
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                />
+              </div>
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="mt-10 flex justify-center">
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
               />
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

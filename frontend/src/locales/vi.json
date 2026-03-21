@@ -20,6 +20,13 @@
     "my_orders": "Đơn hàng của tôi",
     "cart_count": "{{count}} sản phẩm trong giỏ"
   },
+  "pagination": {
+    "label": "Chuyển trang",
+    "prev": "Trang trước",
+    "next": "Trang sau",
+    "page": "Trang {{n}}",
+    "jump_to": "Nhảy đến trang {{n}}"
+  },
   "home": {
     "title": "Thương mại điện tử AI",
     "subtitle": "Khám phá sản phẩm với gợi ý thông minh",
@@ -106,5 +113,47 @@
     "server_error": "Lỗi máy chủ",
     "unauthorized": "Chưa đăng nhập",
     "try_again": "Vui lòng thử lại"
+  },
+  "hero_carousel": {
+    "a11y_label": "Banner khuyến mãi",
+    "dots_label": "Chọn slide",
+    "go_slide": "Đến slide {{n}}",
+    "slide_0_accent": "AI",
+    "slide_0_headline": "SHOP",
+    "slide_0_badge": "Ưu đãi\nMới nhất!",
+    "slide_0_left": "Gợi ý thông minh",
+    "slide_0_right": "Cá nhân hoá",
+    "slide_0_slogan": "Nhanh. Tiện. Thông minh.",
+    "slide_1_accent": "SIÊU",
+    "slide_1_headline": "DEAL",
+    "slide_1_badge": "Giảm giá\nHôm nay!",
+    "slide_1_left": "Giá tốt",
+    "slide_1_right": "Giao nhanh",
+    "slide_1_slogan": "Mua sắm. Tiết kiệm. Hài lòng.",
+    "slide_2_accent": "HÀNG",
+    "slide_2_headline": "MỚI",
+    "slide_2_badge": "Vừa về\nXem ngay!",
+    "slide_2_left": "Cập nhật",
+    "slide_2_right": "Đa dạng",
+    "slide_2_slogan": "Đủ loại. Chất lượng. Uy tín.",
+    "slide_3_accent": "YÊU",
+    "slide_3_headline": "THÍCH",
+    "slide_3_badge": "Lưu ngay\nDanh sách!",
+    "slide_3_left": "Wishlist",
+    "slide_3_right": "Một chạm",
+    "slide_3_slogan": "Lưu lại. So sánh. Mua khi cần."
+  },
+  "footer": {
+    "copyright": "© {{year}} AI Shop. Bảo lưu mọi quyền.",
+    "about_title": "Về AI Shop",
+    "about_origin": "Giới thiệu",
+    "about_service": "Dịch vụ & giao hàng",
+    "about_career": "Tuyển dụng",
+    "about_contact": "Liên hệ",
+    "store_title": "Hệ thống cửa hàng",
+    "find_store": "Tìm cửa hàng gần nhất",
+    "news_title": "Tin tức",
+    "news_link": "Blog & cập nhật",
+    "follow_title": "Theo dõi chúng tôi"
   }
 }

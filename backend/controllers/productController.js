@@ -3,35 +3,45 @@ const db = require('../config/db');
 const getAllProducts = async (req, res) => {
   const { category, search, limit, offset } = req.query;
 
-  let sql = 'SELECT * FROM products WHERE 1=1';
-  const params = [];
+  const hasPagination = limit != null && limit !== '';
 
-  sql += " AND (status = 'approved' OR status IS NULL)";
+  let whereClause = " WHERE (status = 'approved' OR status IS NULL)";
+  const baseParams = [];
 
   if (category) {
-    sql += ' AND category = ?';
-    params.push(category);
+    whereClause += ' AND category = ?';
+    baseParams.push(category);
   }
 
   if (search) {
-    sql += ' AND (name LIKE ? OR description LIKE ?)';
-    params.push(`%${search}%`, `%${search}%`);
-  }
-
-  sql += ' ORDER BY created_at DESC';
-
-  if (limit) {
-    sql += ' LIMIT ?';
-    params.push(parseInt(limit));
-  }
-
-  if (offset) {
-    sql += ' OFFSET ?';
-    params.push(parseInt(offset));
+    whereClause += ' AND (name LIKE ? OR description LIKE ?)';
+    baseParams.push(`%${search}%`, `%${search}%`);
   }
 
   try {
-    const [results] = await db.execute(sql, params);
+    let total = 0;
+    if (hasPagination) {
+      const [countRows] = await db.execute(
+        `SELECT COUNT(*) as total FROM products ${whereClause}`,
+        baseParams
+      );
+      total = Number(countRows[0].total);
+    }
+
+    let sql = `SELECT * FROM products ${whereClause} ORDER BY created_at DESC`;
+    const params = [...baseParams];
+
+    if (hasPagination) {
+      const limitInt = parseInt(String(limit), 10) || 12;
+      const offsetInt = parseInt(String(offset), 10) || 0;
+      sql += ` LIMIT ${limitInt} OFFSET ${offsetInt}`;
+    }
+
+    const [results] = await db.query(sql, params);
+
+    if (hasPagination) {
+      return res.json({ products: results, total });
+    }
     res.json(results);
   } catch (err) {
     console.error('getAllProducts error:', err.message);

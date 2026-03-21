@@ -20,6 +20,13 @@
     "my_orders": "My Orders",
     "cart_count": "{{count}} items in cart"
   },
+  "pagination": {
+    "label": "Pagination",
+    "prev": "Previous page",
+    "next": "Next page",
+    "page": "Page {{n}}",
+    "jump_to": "Jump to page {{n}}"
+  },
   "home": {
     "title": "AI-Powered E-Commerce",
     "subtitle": "Discover products with intelligent recommendations",
@@ -106,5 +113,47 @@
     "server_error": "Server error",
     "unauthorized": "Unauthorized",
     "try_again": "Please try again"
+  },
+  "hero_carousel": {
+    "a11y_label": "Promotional banner",
+    "dots_label": "Choose slide",
+    "go_slide": "Go to slide {{n}}",
+    "slide_0_accent": "AI",
+    "slide_0_headline": "SHOP",
+    "slide_0_badge": "Fresh\nDeals!",
+    "slide_0_left": "Smart picks",
+    "slide_0_right": "Personalized",
+    "slide_0_slogan": "Fast. Easy. Smart.",
+    "slide_1_accent": "MEGA",
+    "slide_1_headline": "DEAL",
+    "slide_1_badge": "Save big\nToday!",
+    "slide_1_left": "Best prices",
+    "slide_1_right": "Quick delivery",
+    "slide_1_slogan": "Shop. Save. Smile.",
+    "slide_2_accent": "NEW",
+    "slide_2_headline": "DROP",
+    "slide_2_badge": "Just in\nSee now!",
+    "slide_2_left": "Latest",
+    "slide_2_right": "Wide range",
+    "slide_2_slogan": "Variety. Quality. Trust.",
+    "slide_3_accent": "LOVE",
+    "slide_3_headline": "LIST",
+    "slide_3_badge": "Save to\nWishlist!",
+    "slide_3_left": "Wishlist",
+    "slide_3_right": "One tap",
+    "slide_3_slogan": "Save. Compare. Buy when ready."
+  },
+  "footer": {
+    "copyright": "© {{year}} AI Shop. All rights reserved.",
+    "about_title": "About AI Shop",
+    "about_origin": "Our story",
+    "about_service": "Services & delivery",
+    "about_career": "Careers",
+    "about_contact": "Contact",
+    "store_title": "Store locator",
+    "find_store": "Find a store near you",
+    "news_title": "News",
+    "news_link": "Blog & updates",
+    "follow_title": "Follow us"
   }
 }

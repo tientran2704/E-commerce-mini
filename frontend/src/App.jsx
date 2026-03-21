@@ -5,6 +5,7 @@ import { CartProvider, useCart } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import './i18n';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -26,9 +27,9 @@ function LayoutWithCart() {
   const [chatbotOpen, setChatbotOpen] = useState(false);
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar cartCount={cartCount} onOpenChatbot={() => setChatbotOpen(true)} />
-      <main className="min-h-[calc(100vh-4rem)]">
+      <main className="flex-1 w-full">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
@@ -44,8 +45,9 @@ function LayoutWithCart() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <Footer />
       <Chatbot isOpen={chatbotOpen} onClose={() => setChatbotOpen(false)} />
-    </>
+    </div>
   );
 }
 
